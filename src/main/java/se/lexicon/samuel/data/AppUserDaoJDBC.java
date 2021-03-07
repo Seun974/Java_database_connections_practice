@@ -86,7 +86,7 @@ public class AppUserDaoJDBC {
        ResultSet resultSet = statement.executeQuery("SELECT * FROM app_user");
         ){
             while (resultSet.next()){
-                result.add(resultSetToAppUser(resultSet)));
+                result.add(resultSetToAppUser(resultSet));
             }
         }catch (SQLException ex){
             ex.printStackTrace();
