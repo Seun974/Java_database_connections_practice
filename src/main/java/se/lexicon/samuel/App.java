@@ -10,19 +10,16 @@ public class App
     {
 
         AppUserDaoJDBC dao = new AppUserDaoJDBC();
-        AppUser erik = dao.findById(1).orElseThrow(RuntimeException::new);
-        erik.setPassword("fredrick");
 
-        erik = dao.update(erik);
-        System.out.println(erik.getPassword());
-
+        AppUser appUser = dao.create(new AppUser("John", "wick", "jwick", "1234"));
+        System.out.println(appUser);
 
 
 
     }
 }
 
-
+//for the create method
 //    AppUser appUser = new AppUser(
 //            "Samuel",
 //            "Adetoye",
@@ -31,3 +28,16 @@ public class App
 //    );
 //
 //        System.out.println(dao.create(appUser));
+
+
+//for the findbyID method
+
+//    AppUser erik = dao.findById(1).orElseThrow(RuntimeException::new);
+//        erik.setPassword("fredrick");
+//
+//                erik = dao.update(erik);
+//                System.out.println(erik.getPassword());
+
+
+//for the delete run
+//System.out.println(dao.delete(1));

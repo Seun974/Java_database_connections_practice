@@ -1,10 +1,15 @@
 package se.lexicon.samuel.data;
 
+import com.sun.imageio.plugins.common.StandardMetadataFormat;
 import se.lexicon.samuel.App;
 import se.lexicon.samuel.model.AppUser;
 
 import java.sql.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
+import java.util.Stack;
 
 public class AppUserDaoJDBC {
 
@@ -73,6 +78,23 @@ public class AppUserDaoJDBC {
         return Optional.ofNullable(appUser);
     }
 
+    public Collection<AppUser> findAll(){
+        Collection<AppUser> result = new ArrayList<>();
+        try(
+                Connection connection = ConnectionFactory.getConnection();
+        Statement statement = connection.createStatement();
+       ResultSet resultSet = statement.executeQuery("SELECT * FROM app_user");
+        ){
+            while (resultSet.next()){
+                result.add(resultSetToAppUser(resultSet)));
+            }
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+
     private void closeAll(AutoCloseable...closeables) {
         if (closeables != null) {
                try{
@@ -125,7 +147,23 @@ public class AppUserDaoJDBC {
     }
 
     //DELETE
+    /*DELETE FROM table_name WHERE condition;*/
     public boolean delete(int appUserId){
-        return false;
+        boolean deleted = false;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try{
+            connection = ConnectionFactory.getConnection();
+            statement = connection.prepareStatement("DELETE FROM app_user WHERE app_user_id = ?");
+            statement.setInt(1, appUserId);
+            int records = statement.executeUpdate();
+            deleted = records > 0;
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }finally {
+            closeAll(statement, connection);
+        }
+
+        return deleted;
     }
 }
