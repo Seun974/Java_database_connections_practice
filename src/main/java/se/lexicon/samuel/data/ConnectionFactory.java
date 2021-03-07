@@ -16,7 +16,7 @@ public class ConnectionFactory {
         Properties properties = new Properties();
         FileReader reader = null;
         try{
-            reader = new FileReader();
+            reader = new FileReader("src/main/resources/credentials.properties");
             properties.load(reader);
         }catch (IOException ex){
             ex.printStackTrace();
